@@ -102,7 +102,6 @@ learning_rate = tf.placeholder(tf.float32, shape=[])
 training = tf.train.AdamOptimizer(learning_rate).minimize(loss, global_step)
 
 saver = tf.train.Saver(max_to_keep=3)
-
 init = tf.global_variables_initializer()
 
 plt.figure(figsize=(18, 16))
@@ -129,20 +128,17 @@ with tf.Session(config=config) as sess:
   while current_epoch < num_epochs:
     print(training_iterations)
     current_epoch = int(np.ceil(iteration/training_iterations)) 
-    i = 0
-    print(i)
-
-    while i < training_iterations:
-      sess.run(training, feed_dict={handle:training_handle, learning_rate:0.0001, train_network:True})
+    i = 1
+    while i <= training_iterations:
+      _, l = sess.run([training, loss], feed_dict={handle:training_handle, learning_rate:0.0001, train_network:True})
       iteration = global_step.eval()
-      i = iteration - (current_epoch*training_iterations) 
+      i = iteration - ((current_epoch-1)*training_iterations) 
 
       if iteration % 10 == 0:
-        #l = sess.run(loss, feed_dict={handle:training_handle, train_network:True})
-        print('Training loss Epoch {} step {}, {} :{}'.format(current_epoch, iteration, i, loss.eval()))
+        print('Training loss Epoch {} step {}, {} :{}'.format(current_epoch, iteration, i, l))
         # write loss to file
         with open(trainloss, 'a') as f: 
-          f.write("Epoch: {} Step: {} Loss: {}\n".format(current_epoch, iteration, loss.eval()))
+          f.write("Epoch: {} Step: {} Loss: {}\n".format(current_epoch, iteration, l))
           f.close()
 
       if (iteration %250 == 0) and (iteration > 0):
@@ -156,8 +152,6 @@ with tf.Session(config=config) as sess:
         
     sess.run(val_iterator.initializer)
     total_loss = 0
-    lumen_IOU = []
-    plaque_IOU = []
     for i in range(validation_iterations):
       print('validation step: {}'.format(i))
       img, lbl, wgt = next_element
@@ -167,8 +161,7 @@ with tf.Session(config=config) as sess:
       # evaluate accuracy
       accuracy = Jaccard(lbl, pred, num_classes)
       dice_score = DICE(lbl, pred, num_classes)
-      lumen_IOU.append(accuracy[2])
-      plaque_IOU.append(accuracy[3])
+
       if (i % 100 == 0) and (i >0):
         plt.subplot(131)
         img_temp = (img + abs(img.min()))/((abs(img.min()) + img.max()))
@@ -183,6 +176,4 @@ with tf.Session(config=config) as sess:
         print(accuracy)
         print(dice_score)
         
-    print('Total lumen IOU is {}'.format(np.mean(lumen_IOU)))
-    print('Total plaque IOU is {}'.format(np.mean(plaque_IOU)))
 f.close()
