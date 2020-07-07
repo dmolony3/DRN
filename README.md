@@ -1,5 +1,5 @@
 # Dilated Residual Network  
-Tensorflow implementation of Dilated Residual Network from Fisher et al. 2017.  Contains
+Tensorflow implementation of [Dilated Residual Network](https://arxiv.org/abs/1705.09914) from Fisher et al. 2017.  Contains
  both 18 layer and 26 layer implementations for **semantic segmentation**. Cross-entropy, weighted 
  cross-entropy and DICE loss can be used.
  
