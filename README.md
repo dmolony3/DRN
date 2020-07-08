@@ -14,7 +14,7 @@ path_to_train_image2.jpg path_to_label_image2.png path_to_weight_image2.png
 ```
 
 An example of an image, labelmap and weightmap is shown below.
-![Example](Example.png "Example image")
+![Example](media/Example.png "Example image")
 
 The model can be trained with the following arguments
 
