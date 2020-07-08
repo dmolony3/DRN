@@ -100,9 +100,9 @@ def train(config):
     # if restoring saved checkpoint get last saved iteration so that correct
     # epoch can be restored
     iteration = global_step.eval()
-    current_epoch = int(np.floor(iteration/training_iterations)) 
+    start_epoch = int(np.floor(iteration/training_iterations)) 
     
-    while current_epoch < config.num_epochs:
+    for current_epoch in range(start_epoch, config.num_epochs):
 
       train_loss = 0
       for i in range(training_iterations):
@@ -132,5 +132,3 @@ def train(config):
           train_loss/training_iterations))
 
       saver.save(sess, config.logs + '/model.ckpt', global_step)
-
-      current_epoch += 1 
