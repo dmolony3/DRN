@@ -24,6 +24,6 @@ python main.py --train_file=path/to/train_data.txt --val_file=path/to/val_data -
 
 The model can be used for inference by setting the mode to predict and providing similar arguments as above
 ```
-python main.py --mode=predict --val_file=path_to_val_data.txt --directory=C:\Users\David\Desktop\ivus_images1 --num_classes=5 --image_dims=500 --channels=3
+python main.py --mode=predict --val_file=path_to_val_data.txt --directory=image/directory_path --num_classes=5 --image_dims=500 --channels=3
 ```
 
