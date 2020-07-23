@@ -79,22 +79,6 @@ class DataReader():
     image = tf.image.decode_jpeg(image)
     image = tf.cast(image, dtype=tf.float32)
 
-    """
-    if label_path:
-      label = tf.read_file(label_path)
-      label = tf.image.decode_png(label)
-      label = tf.cast(label, dtype=tf.int32)
-    else:
-      label = tf.zeros((tf.shape(image)[0], tf.shape(image)[1]))
-
-    if weight_path:
-      weight = tf.read_file(weight_path)
-      weight = tf.image.decode_png(weight)
-      weight = tf.cast(weight, dtype=tf.float32)
-    else:
-      weight = tf.ones((tf.shape(image)[0], tf.shape(image)[1]))
-    """
-
     label = tf.cond(tf.cast(tf.strings.length(label_path), dtype=tf.bool), 
                     lambda: self.read_and_decode_png(label_path), 
                     lambda: tf.zeros(self.image_size, dtype=tf.uint8))
@@ -113,7 +97,7 @@ class DataReader():
     """Reads and decodes png files"""
 
     image = tf.read_file(file_path)
-    image = tf.image.decode_png(image)    
+    image = tf.image.decode_png(image, channels=1)    
     
     return image
 
